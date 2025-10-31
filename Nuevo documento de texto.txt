@@ -1,0 +1,7 @@
+ dotnet new webapi --use-controllers -o MiWebAPI
+
+dotnet add package Microsoft.Data.Sqlite
+
+dotnet add package Swashbuckle.AspNetCore
+
+dotnet new mvc -n MiWebApp
