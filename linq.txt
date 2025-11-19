@@ -1,0 +1,255 @@
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Persona
+{
+    public int Id { get; set; }
+    public string Nombre { get; set; }
+    public string Ciudad { get; set; }
+    public int Edad { get; set; }
+}
+
+class Pedido
+{
+    public int Id { get; set; }
+    public int IdCliente { get; set; }
+    public double Total { get; set; }
+}
+
+class Program
+{
+    static void Main()
+    {
+        var personas = new List<Persona>
+        {
+            new Persona{ Id = 1, Nombre = "Ana", Ciudad = "Rosario", Edad = 25 },
+            new Persona{ Id = 2, Nombre = "Luis", Ciudad = "Rosario", Edad = 17 },
+            new Persona{ Id = 3, Nombre = "Marta", Ciudad = "Córdoba", Edad = 30 },
+            new Persona{ Id = 4, Nombre = "Pedro", Ciudad = "Córdoba", Edad = 22 }
+        };
+
+        var pedidos = new List<Pedido>
+        {
+            new Pedido{ Id = 1, IdCliente = 1, Total = 1000 },
+            new Pedido{ Id = 2, IdCliente = 3, Total = 1500 }
+        };
+
+        // A partir de acá van todos los ejemplos 👇
+
+
+
+
+
+1. Filtrado
+
+Permiten seleccionar elementos que cumplan una condición.
+
+Where() → filtra según una condición (x => x.Edad > 18)
+
+OfType<T>() → filtra los elementos de un tipo específico
+
+
+
+var mayores = personas.Where(p => p.Edad >= 18);
+var soloPersonas = personas.OfType<Persona>();
+
+
+
+2. Proyección (seleccionar campos)
+
+Sirven para transformar o seleccionar datos específicos.
+
+Select() → selecciona campos o crea objetos anónimos
+
+SelectMany() → aplana colecciones anidadas
+
+
+
+var nombres = personas.Select(p => p.Nombre);
+var pares = personas.Select(p => new { p.Nombre, p.Edad });
+var todasCiudades = personas.SelectMany(p => p.Ciudad); // Ejemplo simple, se usa más con listas dentro de listas
+
+
+
+
+3. Ordenamiento
+
+Permiten ordenar los resultados.
+
+OrderBy() → ordena ascendentemente
+
+OrderByDescending() → descendente
+
+ThenBy() → segundo criterio ascendente
+
+ThenByDescending() → segundo criterio descendente
+
+Reverse() → invierte el orden actual
+
+
+
+var ordenadas = personas.OrderBy(p => p.Apellido).ThenBy(p => p.Nombre); // si tuviera Apellido
+var descendente = personas.OrderByDescending(p => p.Edad);
+var invertidas = personas.Reverse();
+
+
+
+4. Agrupamiento
+
+GroupBy() → agrupa elementos por una clave
+
+var grupos = personas.GroupBy(p => p.Ciudad);
+foreach (var grupo in grupos)
+{
+    Console.WriteLine($"Ciudad: {grupo.Key}, Personas: {grupo.Count()}");
+}
+
+
+
+
+5. Unión y combinación
+
+Join() → une dos secuencias por una clave común (como un INNER JOIN)
+
+GroupJoin() → une y agrupa (como LEFT JOIN)
+
+Concat() → concatena dos secuencias
+
+Union() → une eliminando duplicados
+
+Intersect() → elementos comunes
+
+Except() → diferencia de conjuntos
+
+
+
+// JOIN (INNER)
+var join = personas.Join(pedidos,
+                         p => p.Id,
+                         ped => ped.IdCliente,
+                         (p, ped) => new { p.Nombre, ped.Total });
+
+// LEFT JOIN (GroupJoin)
+var leftJoin = personas.GroupJoin(pedidos,
+                                  p => p.Id,
+                                  ped => ped.IdCliente,
+                                  (p, pedList) => new { p.Nombre, Pedidos = pedList });
+
+// Conjuntos
+var lista1 = new[] { 1, 2, 3 };
+var lista2 = new[] { 3, 4, 5 };
+
+var union = lista1.Union(lista2);       // 1,2,3,4,5
+var inter = lista1.Intersect(lista2);   // 3
+var diff = lista1.Except(lista2);       // 1,2
+var concat = lista1.Concat(lista2);     // 1,2,3,3,4,5
+
+
+
+6. Cuantificación
+
+Any() → si existe al menos un elemento que cumple una condición
+
+All() → si todos los elementos cumplen una condición
+
+Contains() → si existe un elemento específico
+
+
+
+bool hayMenores = personas.Any(p => p.Edad < 18);
+bool todosMayores = personas.All(p => p.Edad >= 18);
+bool contienePedro = personas.Select(p => p.Nombre).Contains("Pedro");
+
+
+
+7. Agregación
+
+Count() → cantidad
+
+Sum() → suma
+
+Average() → promedio
+
+Min() → mínimo
+
+Max() → máximo
+
+Aggregate() → operación personalizada de reducción
+
+
+
+int cantidad = personas.Count();
+double promedio = personas.Average(p => p.Edad);
+int minEdad = personas.Min(p => p.Edad);
+int maxEdad = personas.Max(p => p.Edad);
+int sumaEdad = personas.Sum(p => p.Edad);
+
+// Aggregate: combina elementos (ejemplo: nombres concatenados)
+string nombresJuntos = personas.Select(p => p.Nombre)
+                               .Aggregate((a, b) => a + ", " + b);
+
+
+8. Elementos individuales
+
+First() → primer elemento (lanza excepción si no hay)
+
+FirstOrDefault() → primer elemento o valor por defecto
+
+Single() → único elemento (lanza excepción si hay más de uno)
+
+SingleOrDefault() → único elemento o valor por defecto
+
+Last() / LastOrDefault() → último elemento
+
+ElementAt() / ElementAtOrDefault() → elemento por índice
+
+var primero = personas.First();
+var primeroSeguro = personas.FirstOrDefault();
+var unico = personas.Single(p => p.Id == 1);
+var unicoSeguro = personas.SingleOrDefault(p => p.Id == 99);
+var ultimo = personas.Last();
+var elemento2 = personas.ElementAt(1);
+
+
+
+
+
+
+9. Conversión
+
+ToList() → convierte a lista
+
+ToArray() → convierte a arreglo
+
+ToDictionary() → convierte a diccionario
+
+Cast<T>() → convierte los elementos al tipo T
+
+AsEnumerable() / AsQueryable() → cambia el tipo de consulta
+
+
+var lista = personas.ToList();
+var array = personas.ToArray();
+var dic = personas.ToDictionary(p => p.Id, p => p.Nombre);
+var enumerable = personas.AsEnumerable();
+
+
+
+10. Secuencias y generación
+
+Range() → genera una secuencia de números
+
+Repeat() → repite un valor n veces
+
+Empty() → crea una secuencia vacía
+
+DefaultIfEmpty() → si está vacía, devuelve un valor por defecto
+
+
+
+var rango = Enumerable.Range(1, 5);           // 1,2,3,4,5
+var repetidos = Enumerable.Repeat("Hola", 3); // Hola, Hola, Hola
+var vacio = Enumerable.Empty<int>();
+var porDefecto = new int[0].DefaultIfEmpty(99); // devuelve 99

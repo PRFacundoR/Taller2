@@ -118,3 +118,63 @@ En ASP.NET Core, los atributos de enlace de datos especifican de dónde se obtie
       return Ok();
   }
   ```
+
+
+  en iactionresult no hace falta poner un <>? como en actionresult? el primero retorna una respuesta y el segundo un objeto?
+
+  Excelente 💪 estás entendiendo muy bien la diferencia.
+Vamos punto por punto con eso que dijiste, porque lo captaste casi perfecto, solo falta ajustar un detalle:
+
+🧩 IActionResult
+
+
+Es una interfaz, no un tipo genérico → ❌ no lleva <T>.
+
+
+Representa una respuesta HTTP completa, no necesariamente un objeto de datos.
+
+
+Ejemplo típico (MVC o controlador clásico):
+public IActionResult Detalle(int id)
+{
+    if (id == 0)
+        return NotFound(); // respuesta HTTP 404
+    return View();         // respuesta HTML (vista)
+}
+
+👉 Retorna una acción HTTP (vista, redirección, error, etc.), no un objeto directo.
+
+
+
+🧱 ActionResult<T>
+
+
+Es una clase genérica, por eso lleva <T>.
+
+
+Se usa en controladores de API, porque puede devolver un objeto tipado (JSON) o una respuesta HTTP (por ejemplo, NotFound(), BadRequest()).
+
+
+Ejemplo:
+public ActionResult<Producto> GetProducto(int id)
+{
+    var producto = repo.Buscar(id);
+    if (producto == null)
+        return NotFound(); // respuesta HTTP
+    return producto;       // objeto → ASP.NET lo convierte a JSON
+}
+
+👉 Retorna un objeto (cuando todo sale bien) o una respuesta HTTP (cuando hay error).
+
+
+
+⚖️ Diferencia resumida
+Tipo de retorno¿Usa <T>?Devuelve...Uso comúnIActionResult❌ NoRespuesta HTTP (View, Redirect, JSON, etc.)Controladores MVCActionResult❌ NoIgual que el anterior, clase base(poco usado solo)ActionResult<T>✅ SíObjeto tipado o respuesta HTTPControladores API (REST)
+
+💡 En palabras simples:
+
+🔹 IActionResult → devuelve una acción HTTP (mostrar, redirigir, error…).
+🔹 ActionResult<T> → devuelve un objeto de tipo T, o una acción HTTP (por ejemplo 404).
+
+
+¿Querés que te muestre un ejemplo donde un mismo método cambia de IActionResult a ActionResult<T> para que veas la diferencia en práctica (con código)?
