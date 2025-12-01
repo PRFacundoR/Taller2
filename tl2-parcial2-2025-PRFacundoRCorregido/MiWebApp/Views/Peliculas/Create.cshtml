@@ -1,0 +1,44 @@
+@model MiWebApp.ViewModels.PeliculaCreateViewModel
+<section>
+    <h3>CREAR Peliculas</h3>
+</section>
+<section>
+<form asp-controller="Peliculas" asp-action="Create" method="post">
+    
+
+
+    <section class="mb-3">
+        <label asp-for="categoria" class="control-label"></label>
+        <select asp-for="categoria" asp-items="@Model.ListaCategoria" class="form-control">
+            <option value="">-- Seleccionar Producto --</option>
+        </select>
+        <span asp-validation-for="categoria" class="text-danger"></span>
+    </section>
+
+
+
+
+    <section>
+        <label asp-for="Titulo">Titulo de la pelicula </label>
+        <input asp-for="Titulo" class="form-control" />
+        <span asp-validation-for="Titulo" class="text-danger"></span>
+    </section>
+
+
+
+
+
+    <section>
+        <label asp-for="Anio">Año de la pelicula</label>
+        <input asp-for="Anio" class="form-control" />
+        <span asp-validation-for="Anio" class="text-danger"></span>
+
+    </section>
+     <button type="submit">Enviar</button>
+</form>
+
+
+</section>
+
+@section Scripts{<partial name="_ValidationScriptsPartial"/>}
+

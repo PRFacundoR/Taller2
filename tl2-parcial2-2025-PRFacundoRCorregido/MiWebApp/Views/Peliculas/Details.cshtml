@@ -1,0 +1,38 @@
+@model MiWebApp.ViewModels.PeliculaIndexViewModel
+
+<section>
+    <h3>ENCONTRAR PELICULA</h3>
+</section>
+
+
+
+
+<section>
+    <table class="table table-bordered table-hover">
+        <caption>PELICULA</caption>
+
+        <thead>
+            <tr>
+
+                <th>Titulo</th>
+                <th>Año de Creación</th>
+                <th>categoria</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+
+            <tr>
+
+                <td>@Model.Titulo</td>
+                <td>@Model.Anio</td>
+                <td>@Model.categoria</td>
+
+            </tr>
+
+
+        </tbody>
+    </table>
+</section>

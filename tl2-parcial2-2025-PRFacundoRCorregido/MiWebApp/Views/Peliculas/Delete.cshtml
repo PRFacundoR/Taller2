@@ -1,0 +1,24 @@
+@model MiWebApp.ViewModels.PeliculaIndexViewModel
+<section>
+    <h3>BORRAR PELICULA</h3>
+</section>
+<section>
+
+
+<p>Seguro que la queres borrar?</p>
+
+
+<form asp-controller="Peliculas" asp-action="Delete" >
+    
+    <section>
+        
+        <input asp-for="Id" type="hidden" class="form-control" />
+    </section>
+
+   
+     <button type="submit" class="btn btn-secondary" >Si</button>
+     <a asp-controller="Peliculas" asp-action="Index" class="btn btn-secondary">No</a>
+</form>
+
+
+</section>

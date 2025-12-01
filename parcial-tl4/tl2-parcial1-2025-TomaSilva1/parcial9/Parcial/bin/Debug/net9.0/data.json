@@ -1,0 +1,50 @@
+[
+  {
+    "Id": 1,
+    "Title": "Noticias del D\u00EDa",
+    "Genre": "Noticias",
+    "DiaDeLaSemana": 1,
+    "StartTime": 800,
+    "DurationMinutes": 60
+  },
+  {
+    "Id": 2,
+    "Title": "Cocina F\u00E1cil",
+    "Genre": "Cocina",
+    "DiaDeLaSemana": 1,
+    "StartTime": 900,
+    "DurationMinutes": 30
+  },
+  {
+    "Id": 3,
+    "Title": "Cine de Tarde",
+    "Genre": "Pel\u00EDculas",
+    "DiaDeLaSemana": 5,
+    "StartTime": 1800,
+    "DurationMinutes": 120
+  },
+  {
+    "Id": 4,
+    "Title": "Deportes al D\u00EDa",
+    "Genre": "Deportes",
+    "DiaDeLaSemana": 7,
+    "StartTime": 2000,
+    "DurationMinutes": 60
+  },
+  {
+    "Id": 5,
+    "Title": "Dragon ball",
+    "Genre": "Accion",
+    "DiaDeLaSemana": 6,
+    "StartTime": 2300,
+    "DurationMinutes": 30
+  },
+  {
+    "Id": 6,
+    "Title": "Caperucita",
+    "Genre": "infantil",
+    "DiaDeLaSemana": 2,
+    "StartTime": 900,
+    "DurationMinutes": 60
+  }
+]

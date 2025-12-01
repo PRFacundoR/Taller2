@@ -1,0 +1,31 @@
+Consultas SQL
+
+Listar películas 
+SELECT Id, Titulo, Anio, Categoria FROM Peliculas ORDER BY Titulo ASC;
+
+Obtener una Película por ID (GetById)
+SELECT Id, Titulo, Anio, Categoria FROM Peliculas WHERE Id = @Id;
+
+Alta de una Nueva Película (Add)
+INSERT INTO Peliculas (Titulo, Anio, Categoria) VALUES (@Titulo, @Anio, @Categoria); 
+
+Modificación de una Película Existente (Update)
+UPDATE Peliculas SET Titulo = @Titulo, Anio = @Anio, Categoria = @Categoria WHERE Id = @Id;
+
+Eliminación de una Película (Delete)
+DELETE FROM Peliculas WHERE Id = @Id;
+
+Obtener Usuario por Credenciales
+SELECT Id, User, Rol FROM Usuarios WHERE User = @User AND Pass = @Pass;
+
+++++++++++++++++++
+Para Trabajar con SelectList a partir de un enum 
+El siguiente código permite el Casteo de todos los valores del Enum a una lista de SelectListItem es necesario tanto en el CREATE como en el UPDATE
+var items=Enum.GetValues(typeof(Categoria)).Cast<Categoria>().Select(c => new SelectListItem{ Value = c.ToString(), Text = c.ToString()}).ToList();  
+peliculavm.ListaCategorias =new SelectList(items,"Value","Text");
+
+
+Convierte un texto en un valor de ENUM   
+String CategoriaString = “Terror”
+Categoria categoria;    
+Enum.TryParse<Categoria>(CategoriaString  , true, out categoria); // se asigna la “categoría” “Terror” a la variable categoria.

@@ -1,0 +1,61 @@
+@using MiWebApp.ViewModels
+
+
+@{
+    ViewData["Title"] = "Presupuestos";
+}
+
+@model List<PeliculaIndexViewModel>
+<section>
+    <table class="table table-bordered table-hover">
+        <caption>LISTA DE PRESUPUESTOS</caption>
+
+        <thead>
+            <tr>
+
+                <th>Titulo</th>
+                <th>Fecha Creación</th>
+
+                <th>Editar</th>
+                <th>Borrar</th>
+                <th>Detalle</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <a asp-controller="Peliculas" asp-action="Create" class="btn btn-primary">Crear Pelicula</a>
+
+            @foreach (PeliculaIndexViewModel pel in Model)
+            {
+                <tr>
+                    <td>@pel.Titulo</td>
+                    <td>@pel.Anio</td>
+                    <td><a asp-controller="Peliculas" asp-action="Edit" asp-route-id="@pel.Id"
+                            class="btn btn-primary">Editar</a> </td>
+                    <td><a asp-controller="Peliculas" asp-action="Delete" asp-route-id="@pel.Id"
+                            class="btn btn-primary">Borrar</a> </td>
+                    <td>
+                        <a asp-controller="Peliculas" asp-action="Details" asp-route-id="@pel.Id" class="btn btn-primary">
+                            Detalle
+                        </a>
+
+
+
+
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+</section>
+
+<style>
+    table caption {
+        caption-side: top;
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+</style>
+
