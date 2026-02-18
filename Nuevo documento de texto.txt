@@ -1,4 +1,4 @@
- dotnet new webapi --use-controllers -o MiWebAPI
+dotnet new webapi --use-controllers -o MiWebAPI
 
 dotnet add package Microsoft.Data.Sqlite
 

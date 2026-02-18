@@ -178,3 +178,93 @@ Tipo de retorno¿Usa <T>?Devuelve...Uso comúnIActionResult❌ NoRespuesta HTTP 
 
 
 ¿Querés que te muestre un ejemplo donde un mismo método cambia de IActionResult a ActionResult<T> para que veas la diferencia en práctica (con código)?
+
+
+
+
+
+
+new  
+
+
+
+Aquí vamos por partes, porque estas tres dudas son fundamentales para que te vaya bien en el examen y para entender cómo "piensa" una API.
+
+1. ¿Cuándo usar {algo} en la ruta? ([FromRoute])
+Usas el formato nombre/{algo} cuando ese dato es parte de la identidad de lo que buscas. Es decir, sin ese dato, la ruta no tiene sentido.
+
+Ejemplo: Quiero buscar al cadete número 5.
+
+Ruta: api/Cadetes/5
+
+Código: [HttpGet("{id}")]
+
+Regla de oro: Si es un ID o un código único, va en la ruta.
+
+
+
+Atributo,¿Dónde va el dato?,¿Para qué se usa?,Ejemplo Visual
+[FromRoute],En la dirección URL,"Identificación. IDs, Códigos. Es obligatorio.",api/pedidos/104
+
+
+[FromQuery],"Al final, después del ?","Filtros. Búsquedas, ordenamiento, paginación. Es opcional.",api/pedidos?estado=entregado
+
+
+[FromBody],Oculto en el paquete,Objetos grandes. Crear o modificar cosas (POST/PUT).,Un JSON con todos los datos del Cliente.
+
+
+[FromHeader],En la etiqueta de envío,"Metadatos. Contraseñas, Tokens, Idioma.",Authorization: Bearer xyz...
+
+Ejemplo práctico:
+
+¿Buscas un pedido específico? -> Route (/pedidos/5)
+
+¿Buscas todos los pedidos de "Juan"? -> Query (/pedidos?cliente=Juan)
+
+
+
+3. IActionResult vs ActionResult vs ActionResult<T>
+Sobre tu duda de si "da igual": A nivel de funcionamiento, sí, el código va a correr igual. Pero tienen diferencias importantes para la documentación (Swagger) y la comodidad.
+
+Míralo así:
+
+A. IActionResult (El genérico)
+Es el más flexible. Solo prometes devolver "una respuesta HTTP".
+
+Ventaja: Puedes devolver lo que quieras (Ok, NotFound, BadRequest).
+
+Desventaja: Swagger no sabe qué objeto hay dentro del Ok(), así que no te muestra el esquema bonito en la web.
+
+C#
+public IActionResult Get() 
+{
+    return Ok(new Producto()); // Swagger dice: "Devuelve 200", pero no sabe qué devuelve.
+}
+B. ActionResult<T> (El recomendado)
+Es un envoltorio moderno (desde .NET Core 2.1).
+
+Ventaja: Swagger lee la <T> y documenta automáticamente tu clase.
+
+Ventaja "Azúcar Sintáctico": Te permite devolver el objeto directamente sin escribir Ok().
+
+C#
+public ActionResult<Producto> Get() 
+{
+    var miProducto = new Producto();
+    
+    // Opción 1: Clásica
+    return Ok(miProducto); 
+
+    // Opción 2: Atajo (solo posible con ActionResult<T>)
+    return miProducto; // .NET lo convierte a Ok(miProducto) automáticamente
+}
+C. ActionResult (Sin genérico)
+Es una clase base vieja. Rara vez la usarás directamente hoy en día. Lo que viste en el ejemplo seguramente se refería a la capacidad de devolver helpers como Ok(), NotFound(), etc., que heredan de ActionResult.
+
+Resumen para tu examen: Usa ActionResult<TipoDeDato> (ej. ActionResult<List<Cadetes>>).
+
+Te autodocumenta el Swagger.
+
+Te deja devolver Ok(lista) o return lista (si todo salió bien).
+
+Te deja devolver NotFound() si falló.
